@@ -92,7 +92,16 @@ Point = Class.create(Vector, {
 - 2. `Class`创建：使用`apply`和`prototype.constructor`执行构造函数；
 - 3. 判断一个父类能否被继承；
 - 4. 混合(Mixins)。
+
 ### 扩展
+
+你会发发现`extend`贯穿整个Prototype框架。它做的所有工作就是把方法从一个`prototype`复制到另一个。这是一个真正了解原型如何被操纵的好方法-它就像你认为的那样简单。
+`extend`的本质如下：
+```JavaScript
+for (var property in source)
+    destination[property] = source[property];
+```
+
 ### 类创建
 
 ## 深入“类”
