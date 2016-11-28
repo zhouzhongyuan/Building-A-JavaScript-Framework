@@ -104,6 +104,47 @@ for (var property in source)
 
 ### 类创建
 
+`create`用来创建类。它需要一些设置使得它能够被继承，就像上面的例子一样。
+```JavaScript
+create: function(methods) {
+    var klass = function(){
+        this.initialize.apply(this, arguments);
+    }
+    // Copy the passed in methods
+    extend(klass.prototype, methods);
+    
+    // Set the constructor
+    klass.prototype.constructor = klass;
+    
+    // If there's no initialize method, set an empty one
+    if(!klass.prototype.initialize){
+        klass.prototype.initialize = function(){};
+    }
+    return klass;
+}
+
+```
 ## 深入“类”
+`initialize`意味着，当set up 类的时候调用此方法。Turing的`Class.create`方法set up 类。在set up期间，它定义了一个方法，此方法在类实例化时被调用。所以当你调用`new`，它将会实例化。后面的非常简单:
+```JavaScript
+create : function () {
+    var methods = null,
+        parent = undefined,
+        klass = function () {
+            this.initialize.apply(this, arguments);
+        };
+        ……
+```
+有时，我感觉`apply`非常神奇，但是他不是真的神奇——它并没有对你隐藏太多。在这种情况下，它只是使用提供的参数，调用你的`initialize`方法against 新创建的类。`arguments`看起来也很神奇…，但是它只是值所有的参数。
+由于我已经做了个一个约定——所有的对象都有`initialize`方法——我们需要定义一个以防类没有制定`initialize`方法。
+
+```JavaScript
+if(!klass.prototype.initialize){
+    klass.prototype.initialize = function(){};
+}
+```
+
+
+
 ### 语法糖 * Extend === Mixin
 ## 总结
