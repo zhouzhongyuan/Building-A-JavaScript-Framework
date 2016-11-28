@@ -88,10 +88,10 @@ Point = Class.create(Vector, {
 });
 ```
 让我们创建一个简化版的，使得我们能够在将来能够扩展它。我们需要：
-1. 使用`new`方法，通过复制，扩展类；
-2. `Class`创建：使用`apply`和`prototype.constructor`执行构造函数；
-3. 判断一个父类能否被继承；
-4. 混合(Mixins)。
+- 1. 使用`new`方法，通过复制，扩展类；
+- 2. `Class`创建：使用`apply`和`prototype.constructor`执行构造函数；
+- 3. 判断一个父类能否被继承；
+- 4. 混合(Mixins)。
 ### 扩展
 ### 类创建
 
