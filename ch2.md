@@ -64,7 +64,10 @@ p.hasOwnProperty('colour');
 // true
 ```
 
-### 原型 vs 类
+### 原型 vs 经典的
+处理原型继承有很多模式。For this reason it’s useful to abstract it, and offer extra features beyond what JavaScript has as standard为类定义一个API使得代码更加简单，并能使读者更容易查看你的代码。
+事实上，JavaScript的对象模型把类分割成不同的部分使得代码视觉上有点杂乱。把整个类包装起来可能更好一点。由于这是一个研究学习型矿建，以离散和可读的块包装类可能是有益的。
+
 ### 一个类模型设计实现
 ### 扩展
 ### 类创建
