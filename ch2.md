@@ -143,8 +143,34 @@ if(!klass.prototype.initialize){
     klass.prototype.initialize = function(){};
 }
 ```
-
-
-
 ### 语法糖 * Extend === Mixin
+把其他对象的prototype复制到我们的类中将会是一个很酷的功能。Ruby就会这样做，并且我发现它很有用。语法看起来像这样：
+```JavaScript
+var MixinUser = turing.Class({
+    include: User,
+    initialize: function (log) {
+        this.log = log;
+    }
+});
+```
+混合应该准遵循下列规则，使得组合的对象结构清晰：
+- 1. 方法应该从制定的类中被包含；×××
+- 2. `initialize`方法不能被覆盖；
+- 3. 参数可能包含多个参数。
+Since our classes are being run through `turing.oo.create`, we can easily look for an `include` property
+and include methods as required. Rather than including the bulk of this code in `create`, it should be in
+another `mixin` method in `turing.oo to` keep create readable.
+
+为了适应这些规则，单元测试的伪代码如下：
+```JavaScript
+    mixin: function(klass, things) {
+        if "there are some vliad this" {
+            "use turing.oo.extend to copy the methods over"
+        } else if "this things are an array" {
+            for "each class in the array" {
+                "use turing.oo.extend to copy the methods over"
+            }
+        }
+    }
+```
 ## 总结
