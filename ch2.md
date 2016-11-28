@@ -69,6 +69,29 @@ p.hasOwnProperty('colour');
 事实上，JavaScript的对象模型把类分割成不同的部分使得代码视觉上有点杂乱。把整个类包装起来可能更好一点。由于这是一个研究学习型矿建，以离散和可读的块包装类可能是有益的。
 
 ### 一个类模型设计实现
+上一个例子在Prototype框架，代码如下
+```JavaSvript
+Vector = Class.create({
+    initialize: function (x, y) {
+        this.x = x;
+        this.y = y;
+    },
+    toString: function () {
+        return 'x: ' + this.x + ', y: ' + this.y;
+    }
+});
+Point = Class.create(Vector, {
+    initialize: function ($super, x, y, colour) {
+        $super(x, y);
+        this.colour = colour;
+    }
+});
+```
+让我们创建一个简化版的，使得我们能够在将来能够扩展它。我们需要：
+1. 使用`new`方法，通过复制，扩展类；
+2. `Class`创建：使用`apply`和`prototype.constructor`执行构造函数；
+3. 判断一个父类能否被继承；
+4. 混合(Mixins)。
 ### 扩展
 ### 类创建
 
