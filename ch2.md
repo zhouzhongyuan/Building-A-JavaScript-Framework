@@ -157,20 +157,78 @@ var MixinUser = turing.Class({
 - 1. 方法应该从制定的类中被包含；×××
 - 2. `initialize`方法不能被覆盖；
 - 3. 参数可能包含多个参数。
+
 Since our classes are being run through `turing.oo.create`, we can easily look for an `include` property
 and include methods as required. Rather than including the bulk of this code in `create`, it should be in
 another `mixin` method in `turing.oo to` keep create readable.
 
 为了适应这些规则，单元测试的伪代码如下：
 ```JavaScript
-    mixin: function(klass, things) {
-        if "there are some vliad this" {
+mixin: function(klass, things) {
+    if "there are some vliad this" {
+        "use turing.oo.extend to copy the methods over"
+    } else if "this things are an array" {
+        for "each class in the array" {
             "use turing.oo.extend to copy the methods over"
-        } else if "this things are an array" {
-            for "each class in the array" {
-                "use turing.oo.extend to copy the methods over"
-            }
         }
     }
+}
 ```
+### `super`
+我们需要能够继承自一个类，调用我们想要覆盖的方法。给了一个`User`类，我们可以继承它创建一个`SuperUser`
+```JavaScript
+var User = turing.Class({
+    initialize: function (name, age) {
+        this.name = name;
+        this.age  = age;
+    },
+    login: function () {
+        return true;
+    },
+    toString: function () {
+        return "name: " + this.name + ", age: " + this.age;
+    }
+});
+
+var SuperUser = turing.Class(User, {
+    initialize:function () {
+        // Somehow call the parent's initialize
+    }
+});
+```
+单元测试，判断`User`的`initialize`是否被调用：
+```JavaScript
+given('an inherited class that uses super', function () {
+    var superUser = new SuperUser('Zhongyuan', 26);
+    should('have run super()', superUser.age).equals(26);
+});
+```
+如果我执行这个单元测试，没有事`super`的实现，我将得到：
+
+```
+Given an inherited class that uses super
+- should have run super(): 104 does not equal: undefined
+```
+为了解决这个问题，我们需要调用原来定义的方法。使用`apply`
+```JavaScript
+var SuperUser = turing.Class(User, {
+    initialize:function () {
+        User.prototype.initialize.apply(this, arguments);
+    }
+});
+
+```
+上段代码也不够完美。大部分语言为调用者实现了`super`——强制使用者使用`apply`是不明智的。一种解决方法就是使得父类的prototype可以被获得，并且添加一个`super`方法。这个`super`方法能否简单的使用`apply`。副作用就是你不得不制定方法的名称：
+```JavaScript
+var SuperUser = turing.Class(User, {
+    initialize:function () {
+        this.$super('initialize', arguments);
+    },
+    toString: function () {
+        return "SuperUser: " + this.$super('toString');
+    }
+});
+```
+这个一个简单、轻量、易于理解的方法。方法名称可以通过其他方式推断，但是这超出了本书所要讲的内容。
+
 ## 总结
