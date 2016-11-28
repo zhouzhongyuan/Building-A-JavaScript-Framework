@@ -32,6 +32,38 @@ v.add(new Vector(5, 5));
 // x: 6, y: 7
 ```
 ### 原型继承
+JavaScript中没有官方的实现继承的方式。如果想要通过继承`Vector`创建一个`point`类，代码如下：
+```JavaScript
+Vector.prototype.add = function (vector) {
+    this.x += vector.x;
+    this.y += vector.y;
+    return this;
+}
+v.add(new Vector(5, 5));
+// x: 6, y: 7
+
+
+function Point(x, y, colour) {
+    Vector.apply(this, arguments);
+    this.colour = colour;
+}
+Point.prototype = new Vector();
+Point.prototype.constructor = Point;
+
+p = new Point(1, 2, 'red');
+p.colour;
+// red
+p.x;
+// 1
+```
+通过使用`apply`，`Point`能够调用`Vectot`的构造函数。你可能会奇怪`prototype.constructor`怎么来的。这是一个属性，允许你指定创建对象原型的函数。
+当你创建自己的对象时，你也能从Object获得一些方法，例如`toString`、`hasOwnProperty`。
+
+```JavaScript
+p.hasOwnProperty('colour');
+// true
+```
+
 ### 原型 vs 类
 ### 一个类模型设计实现
 ### 扩展
