@@ -33,6 +33,7 @@ Array.prototype.each = function(callback) {
 ```
 但是，JavaScript原生就有`Array.forEcah`,`Array.protototype.forEach`,`for(var i in objectWithIterator)`，还有更多方法实现迭代。那么，为什么框架还要定义它们自己的迭代方法？其中一个原因就是浏览器对迭代的支持不一字。
 1. 你可以看看jQuery的`each`代码（在core.js中）。
+
 2. Prototype框架的通过forEach实现迭代（如果forEach存在）。
 ```JavaScript
 (function() {
@@ -40,6 +41,7 @@ Array.prototype.each = function(callback) {
         slice = arrayPrpto.slice,
         _each = arrayPrpto.forEach;
 ```
+
 3. Underscore.js 使用了类似的方法
 ```JavaScript
 //  一种`each`实现，框架的基石。
