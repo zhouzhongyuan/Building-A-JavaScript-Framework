@@ -71,6 +71,17 @@ var each = _.forEach = function (obj, iterator, context) {
 这种方法使用JavaScript的可用的数据类型和特征，而不是像Enumerable框架修改原生的对象和数组。
 
 ## 基准
+我写了一些基准来测试`each`的实现。你能在test.html和iteratortest.js中查看。
+
+|              | Rhino |Node  |Firefox |Safari |Chrome |Opera  |IE8   | IE7    | IE6|
+|              | ----- |----  |------- |------ |------ |-----  |---   | ---    | ---|
+|eachNative    |1428ms |69ms  |709ms   |114ms  |62ms   |1116ms||||
+|eachNumerical |2129ms |55ms  |904ms   |74ms   |58ms   |1026ms |3674ms| 10764ms| 6840ms|
+|eachForIn     |4223ms |309ms |1446ms  |388ms  |356ms  |2378ms |4844ms| 21782ms| 14224ms|
+
+原生方法表现很好，非常接近for循环。这可能解释了为什么大部分JavaScript框架会使用原生方法（当原生存在的时候）。`for…in`在IE中表现非常糟糕，我们需要小心使用它。
+
+
 ## 接口设计
 ## 测试
 ## 函数式方法
