@@ -17,27 +17,27 @@ JavaScript经常用到`each`。一些框架先定义类，几乎所有的框架�
 
 Ruby程序员经常使用`each`：
 
-    ```ruby
-    [1, 2, 3].each { | number | puts mumber }
-    
-    # 1
-    # 2
-    # 3
-    
-    ```
+```ruby
+[1, 2, 3].each { | number | puts mumber }
+
+# 1
+# 2
+# 3
+
+```
 它给`each`发送一个代码块，`each`会多次调用这个代码块。Enumerable框架使用`each`创建了很多其他方法（受其他函数式语言启发）。Any collection-style object can mixin Enumerable to  get all those methods for free.
 JavaScript代码如下：
 
-    ```JavaScript
-    Array.prototype.each = function(callback) {
-        for(var i = 0; i < this.length; i ++){
-            callback(this[i])
-        }
+```JavaScript
+Array.prototype.each = function(callback) {
+    for(var i = 0; i < this.length; i ++){
+        callback(this[i])
     }
-    [1, 2, 3].each(function (number) {
-        print (number);
-    });
-    ```
+}
+[1, 2, 3].each(function (number) {
+    print (number);
+});
+```
     
 但是，JavaScript原生就有`Array.forEcah`,`Array.protototype.forEach`,`for(var i in objectWithIterator)`，还有更多方法实现迭代。那么，为什么框架还要定义它们自己的迭代方法？其中一个原因就是浏览器对迭代的支持不一字。
 
