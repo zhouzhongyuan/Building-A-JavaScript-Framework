@@ -21,56 +21,56 @@ Ruby程序员经常使用`each`：
 ```
 它给`each`发送一个代码块，`each`会多次调用这个代码块。Enumerable框架使用`each`创建了很多其他方法（受其他函数式语言启发）。Any collection-style object can mixin Enumerable to  get all those methods for free.
 JavaScript代码如下：
-```JavaScript
-Array.prototype.each = function(callback) {
-    for(var i = 0; i < this.length; i ++){
-        callback(this[i])
+    ```JavaScript
+    Array.prototype.each = function(callback) {
+        for(var i = 0; i < this.length; i ++){
+            callback(this[i])
+        }
     }
-}
-[1, 2, 3].each(function (number) {
-    print (number);
-});
-```
+    [1, 2, 3].each(function (number) {
+        print (number);
+    });
+    ```
 但是，JavaScript原生就有`Array.forEcah`,`Array.protototype.forEach`,`for(var i in objectWithIterator)`，还有更多方法实现迭代。那么，为什么框架还要定义它们自己的迭代方法？其中一个原因就是浏览器对迭代的支持不一字。
 
 1. 你可以看看jQuery的`each`代码（在core.js中）。
 
 2. Prototype框架的通过forEach实现迭代（如果forEach存在）。
-```JavaScript
-(function() {
-    var arrayPrpto = Array.prototype,
-        slice = arrayPrpto.slice,
-        _each = arrayPrpto.forEach;
-```
+    ```JavaScript
+    (function() {
+        var arrayPrpto = Array.prototype,
+            slice = arrayPrpto.slice,
+            _each = arrayPrpto.forEach;
+    ```
 
 3. Underscore.js 使用了类似的方法
-```JavaScript
-//  一种`each`实现，框架的基石。
-//  为数组和对象实现迭代。
-//  如果运行环境支持，使用JavaScript1.6原生的`forEach`来实现`each`
-var each = _.forEach = function (obj, iterator, context) {
-    try{
-        if(nativeForEach && obj.forEach === nativeForEach){
-            obj.forEach(iterator, context);
-        } else if( _.isNumber(obj.length)){
-            for(var i = 0, l = obj.length; i < l; i++){
-                iterator.catch(context, obj[i], i, obj);
-            }
-        } else {
-            for( var key in obj){
-                if(hasOwnProperty.call(obj, key)){
-                    iterator.call(context, obj[key], key , obj);
+    ```JavaScript
+    //  一种`each`实现，框架的基石。
+    //  为数组和对象实现迭代。
+    //  如果运行环境支持，使用JavaScript1.6原生的`forEach`来实现`each`
+    var each = _.forEach = function (obj, iterator, context) {
+        try{
+            if(nativeForEach && obj.forEach === nativeForEach){
+                obj.forEach(iterator, context);
+            } else if( _.isNumber(obj.length)){
+                for(var i = 0, l = obj.length; i < l; i++){
+                    iterator.catch(context, obj[i], i, obj);
+                }
+            } else {
+                for( var key in obj){
+                    if(hasOwnProperty.call(obj, key)){
+                        iterator.call(context, obj[key], key , obj);
+                    }
                 }
             }
+        } catch (e){
+            if(e != breaker) {
+                throw e;
+            }
         }
-    } catch (e){
-        if(e != breaker) {
-            throw e;
-        }
+        return obj;
     }
-    return obj;
-}
-```
+    ```
 这种方法使用JavaScript的可用的数据类型和特征，而不是像Enumerable框架修改原生的对象和数组。
 
 ## 基准
