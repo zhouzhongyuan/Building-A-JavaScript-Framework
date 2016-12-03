@@ -112,6 +112,62 @@ turing.enumerable.map([1, 2, 3],function (number) {
 ```
 These methods could be mapped to shorthands later on.
 ## 测试
+关于`each`和`map`的基本测试应该保证数组能够被迭代。
+
+对象也应该被迭代。
 ## 函数式方法
 ## 链式调用
+要想让让turning.js真正能够使用，我们需要能够链式调用。Chaining is natural when you’ve overridden Array.prototype like some libraries do, but seeing as we’re being good namespacers we need to create an API for it.
+
+代码是这样的（与Underscroe不同）：
+```JavaScript
+turing.enumerable.chain([1, 2, 3, 4]).filter(function(n) { return n % 2 == 0; }).map(function(n) { return n * 10; }).values();
+```
+
+链式函数能够使得：当一个函数返回对象，这个对象能被下一个函数使用。如果上面的代码使你感到困惑，看下面的代码
+```JavaScript
+turing.enumerable
+    .chain([1, 2, 3, 4])    // 使用数组开始一个“链式”
+    .filter(function(n) { return n % 2 == 0; }) // 过滤掉奇数
+    .map(function(n) { return n * 10; })    // 对每个数乘以10
+    .values();  //获得值
+```
+要想使上述代码可以执行，我们需要类包含以下特征：
+ - 存储临时数据
+ - 在`turning.enumerable`中执行合适的方法，把临时数据放在第一个参数中
+ - 执行方法之后，返回`this`，使得链式调用能够继续。
+ 
+ 通过使用闭包和`apply`很容易实现：
+ ```JavaScript
+ // 把临时数据存在this.results
+ turing.enumerable.Chainer = turing.Class({
+     initialize: function (values){
+         this.results = values;
+     },
+     values:function () {
+         return this.results;
+     }
+ 
+ });
+ 
+ // Map selected methods by wrapping them in a closure that returns this each time
+ turing.enumerable.each(['map', 'detect', 'filter'],function (methodName) {
+     var method = turing.enumerable[methodName];
+     turing.enumerable.Chainer.prototype[methodName] = function () {
+         var args = Array.prototype.slice.call(arguments);
+         args.unshift(this.results);
+         this.results = method.apply(this,args);
+         return this;
+     }
+ });
+ 
+ ```
+
 ## 总结
+
+现在你知道如何：
+ - 检查有无原生方法来迭代数组和对象
+ - 实现`each`
+ - 使用异常处理
+ - 通过闭包实现链式调用
+ - 使用安全的命名空间API
