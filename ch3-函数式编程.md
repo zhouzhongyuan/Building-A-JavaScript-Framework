@@ -95,6 +95,22 @@ Array.prototype.each = function(callback) {
 
 
 ## 接口设计
+一个重要的考虑是API的设计。Prototype框架修改对象和数组的原型。这使得这个框架很容易被使用，但是同时也导致了此框架很难和其他框架协同工作，因为它不是命名空间安全的。
+
+Underscore有清晰的命名空间设计，with optional use for what it calls functional or object-oriented (which allows chained calls).
+
+我们的库看起来像这样:
+
+```JavaScript
+turing.enumerable.each([1, 2, 3],function (number) {
+    number + 1;
+});
+turing.enumerable.map([1, 2, 3],function (number) {
+    return number + 1;
+})
+//  2, 3, 4
+```
+These methods could be mapped to shorthands later on.
 ## 测试
 ## 函数式方法
 ## 链式调用
