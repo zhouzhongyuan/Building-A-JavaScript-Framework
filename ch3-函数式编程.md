@@ -74,7 +74,7 @@ var each = _.forEach = function (obj, iterator, context) {
 我写了一些基准来测试`each`的实现。你能在test.html和iteratortest.js中查看。
 
 |              | Rhino |Node  |Firefox |Safari |Chrome |Opera  |IE8   | IE7    | IE6|
-|              | ----- |----  |------- |------ |------ |-----  |---   | ---    | ---|
+| ------------ | ----- |----  |------- |------ |------ |-----  |---   | ---    | ---|
 |eachNative    |1428ms |69ms  |709ms   |114ms  |62ms   |1116ms||||
 |eachNumerical |2129ms |55ms  |904ms   |74ms   |58ms   |1026ms |3674ms| 10764ms| 6840ms|
 |eachForIn     |4223ms |309ms |1446ms  |388ms  |356ms  |2378ms |4844ms| 21782ms| 14224ms|
