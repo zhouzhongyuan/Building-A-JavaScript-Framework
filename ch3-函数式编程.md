@@ -116,6 +116,35 @@ These methods could be mapped to shorthands later on.
 
 对象也应该被迭代。
 ## 函数式方法
+基于`each`，让我们创建更多的函数式方法，这些方法借鉴自Underscore和Prototype，而不是Javascript的Array.prototype方法。
+### Filter
+Filter能否让你移除不需要的项。
+```JavaScript
+turing.enumerable.filter([1, 2, 3, 4, 5, 6], function(n) {
+    return n % 2 === 0;
+});
+// 2,4,6
+
+```
+Filter需要实现：
+ - 检查是否存在原生`filter`方法，如果有，就使用它
+ - 没有，就是使用`turning.enumerable.each`
+ - 如果有必要，把对象过滤成多维数组
+
+测试代码（略）
+
+UnderScore也支持对对象的filter,但是它返回的与本框架有点不同(它仅返回value，而不是key/value);
+ 
+### Detect
+
+Detect与filter差别不大。使用方法：
+```JavaScript
+turing.enumerable.detect(['bob', 'sam', 'bill'], function(name) {
+    return name === 'bob'
+})
+//bob
+
+```
 ## 链式调用
 要想让让turning.js真正能够使用，我们需要能够链式调用。Chaining is natural when you’ve overridden Array.prototype like some libraries do, but seeing as we’re being good namespacers we need to create an API for it.
 
